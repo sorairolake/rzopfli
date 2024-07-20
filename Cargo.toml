@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2024 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+[package]
+name = "rzopfli"
+version = "0.1.0"
+authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
+edition = "2021"
+rust-version = "1.74.0"
+description = "A lossless data compression tool using Zopfli"
+readme = "README.md"
+homepage = "https://sorairolake.github.io/rzopfli/"
+repository = "https://github.com/sorairolake/rzopfli"
+license = "Apache-2.0 OR MIT"
+keywords = ["compression", "deflate", "gzip", "zlib", "zopfli"]
+categories = ["command-line-utilities", "compression"]
+include = ["/LICENSES", "/README.md", "/src"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.86"
+clap = { version = "4.5.9", features = ["derive", "wrap_help"] }
+clap_complete = "4.5.8"
+clap_complete_nushell = "4.5.2"
+log = "0.4.22"
+rayon = "1.10.0"
+simplelog = "0.12.2"
+sysexits = "0.8.1"
+zopfli = "0.8.1"
+
+[dev-dependencies]
+assert_cmd = "2.0.14"
+predicates = "3.1.0"
+tempfile = "3.10.1"
+
+[profile.release]
+codegen-units = 1
+lto = true
+panic = "abort"
+strip = true
