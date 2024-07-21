@@ -1,0 +1,23 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= rzopfli
+:github-url: https://github.com
+:project-url: {github-url}/sorairolake/rzopfli
+:shields-url: https://img.shields.io
+:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/rzopfli/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
+:ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
+:version-badge: {shields-url}/crates/v/rzopfli?style=for-the-badge&logo=rust
+:version-url: https://crates.io/crates/rzopfli
+:msrv-badge: {shields-url}/crates/msrv/rzopfli?style=for-the-badge&logo=rust
+:license-badge: {shields-url}/crates/l/rzopfli?style=for-the-badge
+:zopfli-repo-url: {github-url}/google/zopfli
+
+image:{ci-badge}[CI,link={ci-url}]
+image:{version-badge}[Version,link={version-url}]
+image:{msrv-badge}[MSRV]
+image:{license-badge}[License]
+
+**rzopfli** is a lossless data compression tool which uses the
+{zopfli-repo-url}[Zopfli] compression algorithm.

@@ -10,6 +10,20 @@
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 #![allow(clippy::multiple_crate_versions)]
 
-fn main() {
-    println!("Hello, world!");
+mod app;
+mod cli;
+
+use std::{io, process::ExitCode};
+
+fn main() -> ExitCode {
+    match app::run() {
+        Ok(()) => ExitCode::SUCCESS,
+        Err(err) => {
+            eprintln!("Error: {err:?}");
+            if let Some(e) = err.downcast_ref::<io::Error>() {
+                return sysexits::ExitCode::from(e.kind()).into();
+            }
+            ExitCode::FAILURE
+        }
+    }
 }

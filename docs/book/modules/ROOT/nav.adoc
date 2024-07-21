@@ -1,0 +1,16 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+* xref:install.adoc[]
+* xref:build.adoc[]
+* xref:usage.adoc[]
+
+.Man page
+* xref:man/man1/rzopfli.1.adoc[`rzopfli(1)`]
+
+.Resources
+* xref:changelog.adoc[]
+* xref:contributing.adoc[]
+* xref:authors.adoc[]
+* xref:license.adoc[]

@@ -1,0 +1,31 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Usage
+
+== Basic usage
+
+.Compress a file into the gzip format
+[source,sh]
+----
+rzopfli foo.txt
+----
+
+== Generate shell completion
+
+`--generate-completion` option generates shell completions to standard output.
+
+.The following shells are supported
+* `bash`
+* `elvish`
+* `fish`
+* `nushell`
+* `powershell`
+* `zsh`
+
+.Example
+[source,sh]
+----
+rzopfli --generate-completion bash > rzopfli.bash
+----
