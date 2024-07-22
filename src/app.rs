@@ -14,7 +14,7 @@ use log::{info, warn};
 use simplelog::{ColorChoice, Config, SimpleLogger, TermLogger, TerminalMode};
 use zopfli::{Format, Options};
 
-use crate::cli::Opt;
+use crate::{cli::Opt, output::Output};
 
 /// Runs the program and returns the result.
 #[allow(clippy::too_many_lines)]
@@ -81,47 +81,51 @@ pub fn run() -> anyhow::Result<()> {
             p.as_mut_os_string().push(extension);
             p
         });
-        if let Some(ref path) = output_path {
-            info!("Saving to: {}", path.display());
-        }
-
-        let mut output = Vec::new();
-        zopfli::compress(zopfli_opt, format, input.as_slice(), &mut output)
-            .context("data could not be compressed")?;
-
-        match file {
+        let output = match file {
             Some(ref path) if path.as_os_str() != "-" && !opt.stdout => {
-                let output_path = output_path.context("could not determine the output filename")?;
-                if opt.force {
-                    File::create(&output_path)
+                let output_path = output_path
+                    .as_ref()
+                    .context("could not determine the output filename")?;
+                let f = if opt.force {
+                    File::create(output_path)
                 } else {
-                    File::create_new(&output_path)
+                    File::create_new(output_path)
                 }
-                .with_context(|| format!("could not open {}", output_path.display()))?
-                .write_all(&output)
-                .with_context(|| format!("could not write data to {}", output_path.display()))?;
+                .with_context(|| format!("could not open {}", output_path.display()))?;
+                Output::File(f)
             }
             _ => {
-                let mut stdout = io::stdout();
+                let stdout = io::stdout();
                 if stdout.is_terminal() && !(opt.stdout || opt.force) {
                     bail!("compressed data not written to a terminal");
                 }
-                stdout
-                    .write_all(&output)
-                    .context("could not write data to stdout")?;
+                Output::Stdout(stdout)
+            }
+        };
+        if let Some(ref path) = output_path {
+            if !opt.stdout {
+                info!("Saving to: {}", path.display());
             }
         }
 
-        if opt.remove {
-            let input_path = file
-                .filter(|p| p.as_os_str() != "-")
-                .context("could not get the input filename")?;
-            fs::remove_file(&input_path)
-                .with_context(|| format!("could not remove {}", input_path.display()))?;
+        let mut output_buf = Vec::new();
+        zopfli::compress(zopfli_opt, format, input.as_slice(), &mut output_buf)
+            .context("data could not be compressed")?;
+
+        match output {
+            Output::File(mut f) => {
+                let output_path = output_path.context("could not determine the output filename")?;
+                f.write_all(&output_buf).with_context(|| {
+                    format!("could not write data to {}", output_path.display())
+                })?;
+            }
+            Output::Stdout(mut stdout) => stdout
+                .write_all(&output_buf)
+                .context("could not write data to standard output")?,
         }
 
         let input_size = input.len();
-        let output_size = output.len();
+        let output_size = output_buf.len();
         #[allow(clippy::cast_precision_loss)]
         let space_saving = (1.0 - (output_size as f64 / input_size as f64)) * 100.0;
         info!(
@@ -130,6 +134,15 @@ pub fn run() -> anyhow::Result<()> {
             Byte::from(output_size).get_appropriate_unit(UnitType::Binary),
             space_saving
         );
+
+        if opt.remove {
+            let input_path = file
+                .filter(|p| p.as_os_str() != "-")
+                .context("could not get the input filename")?;
+            fs::remove_file(&input_path)
+                .with_context(|| format!("could not remove {}", input_path.display()))?;
+            info!("{} has been removed", input_path.display());
+        }
     }
     Ok(())
 }

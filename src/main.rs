@@ -12,6 +12,7 @@
 
 mod app;
 mod cli;
+mod output;
 
 use std::{io, process::ExitCode};
 
