@@ -30,7 +30,7 @@ pub fn run() -> anyhow::Result<()> {
     TermLogger::init(
         log_level,
         Config::default(),
-        TerminalMode::Mixed,
+        TerminalMode::Stderr,
         ColorChoice::Auto,
     )
     .or_else(|_| SimpleLogger::init(log_level, Config::default()))?;
@@ -61,28 +61,24 @@ pub fn run() -> anyhow::Result<()> {
                 buf
             }
         };
-        if !opt.quiet {
-            if let Some(
-                "application/gzip"
-                | "application/x-bzip2"
-                | "application/x-compress"
-                | "application/x-lzip"
-                | "application/x-xz"
-                | "application/zstd",
-            ) = infer::get(&input).map(|t| t.mime_type())
-            {
-                warn!("input data is already compressed");
-            }
+        if let Some(
+            "application/gzip"
+            | "application/x-bzip2"
+            | "application/x-compress"
+            | "application/x-lzip"
+            | "application/x-xz"
+            | "application/zstd",
+        ) = infer::get(&input).map(|t| t.mime_type())
+        {
+            warn!("input data is already compressed");
         }
 
         let output_path = file.clone().filter(|p| p.as_os_str() != "-").map(|mut p| {
             p.as_mut_os_string().push(extension);
             p
         });
-        if opt.verbose {
-            if let Some(ref path) = output_path {
-                info!("Saving to: {}", path.display());
-            }
+        if let Some(ref path) = output_path {
+            info!("Saving to: {}", path.display());
         }
 
         let mut output = Vec::new();
@@ -120,18 +116,16 @@ pub fn run() -> anyhow::Result<()> {
                 .with_context(|| format!("could not remove {}", input_path.display()))?;
         }
 
-        if opt.verbose {
-            let input_size = input.len();
-            let output_size = output.len();
-            #[allow(clippy::cast_precision_loss)]
-            let space_saving = (1.0 - (output_size as f64 / input_size as f64)) * 100.0;
-            info!(
-                "Original Size: {:#.2}, Compressed: {:#.2}, Compression: {:.2}% Removed",
-                Byte::from(input_size).get_appropriate_unit(UnitType::Binary),
-                Byte::from(output_size).get_appropriate_unit(UnitType::Binary),
-                space_saving
-            );
-        }
+        let input_size = input.len();
+        let output_size = output.len();
+        #[allow(clippy::cast_precision_loss)]
+        let space_saving = (1.0 - (output_size as f64 / input_size as f64)) * 100.0;
+        info!(
+            "Original Size: {:#.2}, Compressed: {:#.2}, Compression: {:.2}% Removed",
+            Byte::from(input_size).get_appropriate_unit(UnitType::Binary),
+            Byte::from(output_size).get_appropriate_unit(UnitType::Binary),
+            space_saving
+        );
     }
     Ok(())
 }

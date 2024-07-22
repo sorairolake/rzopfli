@@ -52,19 +52,11 @@ pub struct Opt {
     ///
     /// This is the default behavior.
     #[arg(short, long, conflicts_with("remove"))]
-    pub keep: bool,
+    pub _keep: bool,
 
     /// Remove input files after successful compression.
     #[arg(long("rm"))]
     pub remove: bool,
-
-    /// Suppress warnings.
-    #[arg(short, long)]
-    pub quiet: bool,
-
-    /// Enable verbose output.
-    #[arg(short, long)]
-    pub verbose: bool,
 
     /// Perform compression for the specified number of iterations.
     ///

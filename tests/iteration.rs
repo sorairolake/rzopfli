@@ -29,17 +29,16 @@ fn compress_with_1_iteration() {
     output_filename.as_mut_os_string().push(".gz");
     assert!(!output_filename.exists());
     utils::command::command()
-        .arg("-v")
         .arg("-i")
         .arg("1")
         .arg(input_filename)
         .assert()
         .success()
-        .stdout(predicate::str::contains(format!(
+        .stderr(predicate::str::contains(format!(
             "Saving to: {}",
             output_filename.display()
         )))
-        .stdout(predicate::str::contains(
+        .stderr(predicate::str::contains(
             "Original Size: 1.04 KiB, Compressed: 618 B, Compression: 42.08% Removed",
         ));
     let compressed_data = fs::read(output_filename).unwrap();
@@ -61,17 +60,16 @@ fn compress_with_10_iterations() {
     output_filename.as_mut_os_string().push(".gz");
     assert!(!output_filename.exists());
     utils::command::command()
-        .arg("-v")
         .arg("-i")
         .arg("10")
         .arg(input_filename)
         .assert()
         .success()
-        .stdout(predicate::str::contains(format!(
+        .stderr(predicate::str::contains(format!(
             "Saving to: {}",
             output_filename.display()
         )))
-        .stdout(predicate::str::contains(
+        .stderr(predicate::str::contains(
             "Original Size: 1.04 KiB, Compressed: 616 B, Compression: 42.27% Removed",
         ));
     let compressed_data = fs::read(output_filename).unwrap();
@@ -93,17 +91,16 @@ fn compress_with_50_iterations() {
     output_filename.as_mut_os_string().push(".gz");
     assert!(!output_filename.exists());
     utils::command::command()
-        .arg("-v")
         .arg("-i")
         .arg("50")
         .arg(input_filename)
         .assert()
         .success()
-        .stdout(predicate::str::contains(format!(
+        .stderr(predicate::str::contains(format!(
             "Saving to: {}",
             output_filename.display()
         )))
-        .stdout(predicate::str::contains(
+        .stderr(predicate::str::contains(
             "Original Size: 1.04 KiB, Compressed: 613 B, Compression: 42.55% Removed",
         ));
     let compressed_data = fs::read(output_filename).unwrap();
@@ -125,17 +122,16 @@ fn compress_with_1000_iterations() {
     output_filename.as_mut_os_string().push(".gz");
     assert!(!output_filename.exists());
     utils::command::command()
-        .arg("-v")
         .arg("-i")
         .arg("1000")
         .arg(input_filename)
         .assert()
         .success()
-        .stdout(predicate::str::contains(format!(
+        .stderr(predicate::str::contains(format!(
             "Saving to: {}",
             output_filename.display()
         )))
-        .stdout(predicate::str::contains(
+        .stderr(predicate::str::contains(
             "Original Size: 1.04 KiB, Compressed: 612 B, Compression: 42.64% Removed",
         ));
     let compressed_data = fs::read(output_filename).unwrap();

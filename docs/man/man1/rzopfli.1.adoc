@@ -4,7 +4,7 @@
 
 = rzopfli(1)
 // Specify in UTC.
-:docdate: 2024-07-21
+:docdate: 2024-07-22
 :doctype: manpage
 ifdef::revnumber[:mansource: rzopfli {revnumber}]
 ifndef::revnumber[:mansource: rzopfli]
@@ -60,14 +60,6 @@ _FILE_::
 
   Remove input files after successful compression. This option conflicts with
   *--stdout* and *--keep*.
-
-*-q*, *--quiet*::
-
-  Suppress warnings.
-
-*-v*, *--verbose*::
-
-  Enable verbose output.
 
 *-i*, *--iteration* _TIMES_::
 
