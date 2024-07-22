@@ -54,8 +54,12 @@ pub fn run() -> anyhow::Result<()> {
             Some(ref path) if path.as_os_str() != "-" => fs::read(path)
                 .with_context(|| format!("could not read data from {}", path.display()))?,
             _ => {
+                let mut stdin = io::stdin();
+                if stdin.is_terminal() && !opt.force {
+                    bail!("standard input is a terminal");
+                }
                 let mut buf = Vec::new();
-                io::stdin()
+                stdin
                     .read_to_end(&mut buf)
                     .context("could not read data from standard input")?;
                 buf

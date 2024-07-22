@@ -30,7 +30,24 @@ rzopfli - a lossless data compression tool using Zopfli
 
 *{manname}* is a lossless data compression tool which uses the
 {zopfli-repo-url}[Zopfli] compression algorithm. *{manname}* command line
-syntax is similar to *gzip*(1) and *zstd*(1).
+syntax is similar to *gzip*(1) and *zstd*(1), and some options derived from the
+Zopfli reference implementation. Zopfli achieves higher compression ratios than
+other DEFLATE compressors, generating standard DEFLATE streams that can be
+decompressed with any DEFLATE decompressor, at the cost of being slower.
+
+*{manname}* preserves input files by default, just like *zstd*(1). It's
+possible to remove them automatically by using *--rm*.
+
+If _FILE_ is not specified, or if "-" is specified, *{manname}* reads data from
+standard input and writes the processed data to standard output. *{manname}*
+will refuse to write processed data to standard output if it is a terminal and
+*--force* is not specified. Similarly, *{manname}* will refuse to read data
+from standard input if it is a terminal and *--stdout* or *--force* is not
+specified.
+
+If _FILE_ is a file, the processed data is written to a new file whose name is
+the input filename with the appropriate extension (either *.gz*, *.zlib*, or
+*.deflate*) appended, unless *--stdout* is specified.
 
 == POSITIONAL ARGUMENTS
 
@@ -173,6 +190,22 @@ Source repository:{blank}::
 Compress a file into the gzip format:{blank}::
 
   $ *rzopfli foo.txt*
+
+Write the processed data to standard output:{blank}::
+
+  $ *rzopfli -c foo.txt*
+
+Remove an input file after successful compression:{blank}::
+
+  $ *rzopfli --rm foo.txt*
+
+Performs 50 compression iterations:{blank}::
+
+  $ *rzopfli -i 50 foo.txt*
+
+Compress a file into the zlib format:{blank}::
+
+  $ *rzopfli --format zlib foo.txt*
 
 ifndef::site-gen-antora[include::{includedir}/section-reporting-bugs.adoc[]]
 ifdef::site-gen-antora[include::partial$man/man1/include/section-reporting-bugs.adoc[]]

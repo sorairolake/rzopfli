@@ -32,12 +32,41 @@ Please see [BUILD.adoc].
 
 ## Usage
 
+The command line syntax of `rzopfli` is similar to `gzip` and `zstd`, and some
+options derived from the Zopfli reference implementation. `rzopfli` preserves
+input files by default, just like `zstd`. It's possible to remove them
+automatically by using `--rm`.
+
 ### Basic usage
 
 Compress a file into the gzip format:
 
 ```sh
 rzopfli foo.txt
+```
+
+Write the processed data to standard output:
+
+```sh
+rzopfli -c foo.txt
+```
+
+Remove an input file after successful compression:
+
+```sh
+rzopfli --rm foo.txt
+```
+
+Performs 50 compression iterations:
+
+```sh
+rzopfli -i 50 foo.txt
+```
+
+Compress a file into the zlib format:
+
+```sh
+rzopfli --format zlib foo.txt
 ```
 
 ### Generate shell completion
