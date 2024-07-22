@@ -214,7 +214,11 @@ fn compress_with_remove() {
         .arg("--rm")
         .arg(&input_filename)
         .assert()
-        .success();
+        .success()
+        .stderr(predicate::str::contains(format!(
+            "{} has been removed",
+            input_filename.display()
+        )));
     let compressed_data = fs::read(output_filename).unwrap();
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());

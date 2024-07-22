@@ -124,14 +124,6 @@ pub fn run() -> anyhow::Result<()> {
                 .context("could not write data to standard output")?,
         }
 
-        if opt.remove {
-            let input_path = file
-                .filter(|p| p.as_os_str() != "-")
-                .context("could not get the input filename")?;
-            fs::remove_file(&input_path)
-                .with_context(|| format!("could not remove {}", input_path.display()))?;
-        }
-
         let input_size = input.len();
         let output_size = output_buf.len();
         #[allow(clippy::cast_precision_loss)]
@@ -142,6 +134,15 @@ pub fn run() -> anyhow::Result<()> {
             Byte::from(output_size).get_appropriate_unit(UnitType::Binary),
             space_saving
         );
+
+        if opt.remove {
+            let input_path = file
+                .filter(|p| p.as_os_str() != "-")
+                .context("could not get the input filename")?;
+            fs::remove_file(&input_path)
+                .with_context(|| format!("could not remove {}", input_path.display()))?;
+            info!("{} has been removed", input_path.display());
+        }
     }
     Ok(())
 }
