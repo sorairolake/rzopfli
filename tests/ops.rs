@@ -138,7 +138,7 @@ fn compress_with_force() {
         output_filename.as_mut_os_string().push(".gz");
         File::create_new(&output_filename).unwrap();
         assert!(output_filename.exists());
-        utils::command::command()
+        let command = utils::command::command()
             .arg(input_filename)
             .assert()
             .failure()
@@ -146,8 +146,12 @@ fn compress_with_force() {
             .stderr(predicate::str::contains(format!(
                 "could not open {}",
                 output_filename.display()
-            )))
-            .stderr(predicate::str::contains("File exists"));
+            )));
+        if cfg!(windows) {
+            command.stderr(predicate::str::contains("The file exists. (os error 80)"));
+        } else {
+            command.stderr(predicate::str::contains("File exists (os error 17)"));
+        }
     }
     {
         let temp_dir = tempfile::tempdir().unwrap();
