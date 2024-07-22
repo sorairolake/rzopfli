@@ -1,0 +1,218 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= rzopfli(1)
+// Specify in UTC.
+:docdate: 2024-07-22
+:doctype: manpage
+ifdef::revnumber[:mansource: rzopfli {revnumber}]
+ifndef::revnumber[:mansource: rzopfli]
+:manmanual: General Commands Manual
+ifndef::site-gen-antora[:includedir: ./include]
+:github-url: https://github.com
+:zopfli-repo-url: {github-url}/google/zopfli
+:ietf-datatracker: https://datatracker.ietf.org
+:datatracker-html-doc: {ietf-datatracker}/doc/html
+:rfc1952: {datatracker-html-doc}/rfc1952
+:rfc1950: {datatracker-html-doc}/rfc1950
+:rfc1951: {datatracker-html-doc}/rfc1951
+
+== NAME
+
+rzopfli - a lossless data compression tool using Zopfli
+
+== SYNOPSIS
+
+*{manname}* [_OPTION_]... [_FILE_]...
+
+== DESCRIPTION
+
+*{manname}* is a lossless data compression tool which uses the
+{zopfli-repo-url}[Zopfli] compression algorithm. *{manname}* command line
+syntax is similar to *gzip*(1) and *zstd*(1), and some options derived from the
+Zopfli reference implementation. Zopfli achieves higher compression ratios than
+other DEFLATE compressors, generating standard DEFLATE streams that can be
+decompressed with any DEFLATE decompressor, at the cost of being slower.
+
+*{manname}* preserves input files by default, just like *zstd*(1). It's
+possible to remove them automatically by using *--rm*.
+
+If _FILE_ is not specified, or if "-" is specified, *{manname}* reads data from
+standard input and writes the processed data to standard output. *{manname}*
+will refuse to write processed data to standard output if it is a terminal and
+*--force* is not specified. Similarly, *{manname}* will refuse to read data
+from standard input if it is a terminal and *--stdout* or *--force* is not
+specified.
+
+If _FILE_ is a file, the processed data is written to a new file whose name is
+the input filename with the appropriate extension (either *.gz*, *.zlib*, or
+*.deflate*) appended, unless *--stdout* is specified.
+
+== POSITIONAL ARGUMENTS
+
+_FILE_::
+
+  Files to compress. If _FILE_ is not specified, or if "-" is specified, data
+  will be read from standard input.
+
+== OPTIONS
+
+*-c*, *--stdout*::
+
+  Write to standard output, keep original files. This option conflicts with
+  *--rm*.
+
+*-f*, *--force*::
+
+  Force compression even if the output file already exists. This option allows
+  you to overwrite existing files.
+
+*-k*, *--keep*::
+
+  Keep input files. This is the default behavior. This option conflicts with
+  *--rm*.
+
+*--rm*::
+
+  Remove input files after successful compression. This option conflicts with
+  *--stdout* and *--keep*.
+
+*-i*, *--iteration* _TIMES_::
+
+  Perform compression for the specified number of iterations. Higher numbers
+  produce higher compression ratio at the expense of compression speed. Default
+  is 15.
+
+*--format* _FORMAT_::
+
+  Output to the specified format.
+
+  The possible values are:{blank}:::
+
+    *gzip*::::
+
+      The gzip file format, as defined in {rfc1952}[RFC 1952]. This value will
+      append the extension *.gz* to the input filename. This is the default
+      value.
+
+    *zlib*::::
+
+      The zlib file format, as defined in {rfc1950}[RFC 1950]. This value will
+      append the extension *.zlib* to the input filename.
+
+    *deflate*::::
+
+      The raw DEFLATE stream format, as defined in {rfc1951}[RFC 1951]. This
+      value will append the extension *.deflate* to the input filename.
+
+*--log-level* _LEVEL_::
+
+  The minimum log level to print.
+
+  The possible values are:{blank}:::
+
+    *OFF*::::
+
+      Lowest log level.
+
+    *ERROR*::::
+
+      Error log level.
+
+    *WARN*::::
+
+      Warn log level.
+
+    *INFO*::::
+
+      Info log level. This is the default value.
+
+    *DEBUG*::::
+
+      Debug log level.
+
+    *TRACE*::::
+
+      Trace log level.
+
+*-h*, *--help*::
+
+  Print help message. The short flag (*-h*) will print a condensed help message
+  while the long flag (*--help*) will print a detailed help message.
+
+*-V*, *--version*::
+
+  Print version number. The long flag (*--version*) will also print the
+  copyright notice, the license notice and where to report bugs.
+
+*--generate-completion* _SHELL_::
+
+  Generate shell completion. The completion is output to standard output.
+
+  The possible values are:{blank}:::
+
+    *bash*::::
+
+      Bash.
+
+    *elvish*::::
+
+      Elvish.
+
+    *fish*::::
+
+      fish.
+
+    *nushell*::::
+
+      Nushell.
+
+    *powershell*::::
+
+      PowerShell.
+
+    *zsh*::::
+
+      Zsh.
+
+ifndef::site-gen-antora[include::{includedir}/section-exit-status.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-exit-status.adoc[]]
+
+== NOTES
+
+Source repository:{blank}::
+
+  {github-url}/sorairolake/rzopfli
+
+== EXAMPLES
+
+Compress a file into the gzip format:{blank}::
+
+  $ *rzopfli foo.txt*
+
+Write the processed data to standard output:{blank}::
+
+  $ *rzopfli -c foo.txt*
+
+Remove an input file after successful compression:{blank}::
+
+  $ *rzopfli --rm foo.txt*
+
+Performs 50 compression iterations:{blank}::
+
+  $ *rzopfli -i 50 foo.txt*
+
+Compress a file into the zlib format:{blank}::
+
+  $ *rzopfli --format zlib foo.txt*
+
+ifndef::site-gen-antora[include::{includedir}/section-reporting-bugs.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-reporting-bugs.adoc[]]
+
+ifndef::site-gen-antora[include::{includedir}/section-copyright.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-copyright.adoc[]]
+
+== SEE ALSO
+
+*gzip*(1), *zstd*(1)

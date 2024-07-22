@@ -1,0 +1,34 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+= How to Build
+
+== Prerequisites
+
+.To build *rzopfli*, you will need the following dependencies
+* https://doc.rust-lang.org/stable/cargo/[Cargo] (v1.77.0 or later)
+
+.To build a man page, you will need the following additional dependencies
+* https://asciidoctor.org/[Asciidoctor]
+
+== Building from source
+
+.To clone the repository
+[source,sh]
+----
+git clone https://github.com/sorairolake/rzopfli.git
+cd rzopfli
+----
+
+.To build a package
+[source,sh]
+----
+just build
+----
+
+.To find the directory where a man page are generated
+[source,sh]
+----
+fd -t directory out ./target/*/build/rzopfli-*
+----
