@@ -38,8 +38,8 @@ fn compress_to_gzip() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }
 
@@ -62,8 +62,8 @@ fn compress_to_zlib() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = ZlibDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }
 
@@ -86,8 +86,8 @@ fn compress_to_deflate() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = DeflateDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }
 
@@ -108,8 +108,8 @@ fn compress_to_default_format() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }
 
