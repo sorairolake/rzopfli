@@ -34,7 +34,7 @@ zopfli = "0.8.1"
 [dev-dependencies]
 assert_cmd = "2.0.14"
 flate2 = "1.0.30"
-predicates = "3.1.0"
+predicates = "3.1.2"
 tempfile = "3.10.1"
 
 [profile.release]
