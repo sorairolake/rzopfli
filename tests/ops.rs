@@ -20,7 +20,7 @@ use std::{
 use flate2::read::GzDecoder;
 use predicates::prelude::predicate;
 
-const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/MIT.txt");
+const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/CC-BY-4.0.txt");
 
 #[test]
 fn compress_from_stdin() {
@@ -34,8 +34,8 @@ fn compress_from_stdin() {
         assert_ne!(compressed_data, TEST_DATA);
         assert!(compressed_data.len() < TEST_DATA.len());
         let mut decoder = GzDecoder::new(compressed_data.as_slice());
-        let mut buf = Vec::new();
-        decoder.read_to_end(&mut buf).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        decoder.read_exact(&mut buf).unwrap();
         assert_eq!(buf, TEST_DATA);
         assert!(output.status.success());
     }
@@ -49,8 +49,8 @@ fn compress_from_stdin() {
         assert_ne!(compressed_data, TEST_DATA);
         assert!(compressed_data.len() < TEST_DATA.len());
         let mut decoder = GzDecoder::new(compressed_data.as_slice());
-        let mut buf = Vec::new();
-        decoder.read_to_end(&mut buf).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        decoder.read_exact(&mut buf).unwrap();
         assert_eq!(buf, TEST_DATA);
         assert!(output.status.success());
     }
@@ -65,8 +65,8 @@ fn compress_from_stdin() {
         assert_ne!(compressed_data, TEST_DATA);
         assert!(compressed_data.len() < TEST_DATA.len());
         let mut decoder = GzDecoder::new(compressed_data.as_slice());
-        let mut buf = Vec::new();
-        decoder.read_to_end(&mut buf).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        decoder.read_exact(&mut buf).unwrap();
         assert_eq!(buf, TEST_DATA);
         assert!(output.status.success());
     }
@@ -81,8 +81,8 @@ fn compress_from_stdin() {
         assert_ne!(compressed_data, TEST_DATA);
         assert!(compressed_data.len() < TEST_DATA.len());
         let mut decoder = GzDecoder::new(compressed_data.as_slice());
-        let mut buf = Vec::new();
-        decoder.read_to_end(&mut buf).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        decoder.read_exact(&mut buf).unwrap();
         assert_eq!(buf, TEST_DATA);
         assert!(output.status.success());
     }
@@ -103,8 +103,8 @@ fn write_to_stdout() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
     assert!(output.status.success());
 }
@@ -171,8 +171,8 @@ fn compress_with_force() {
         assert_ne!(compressed_data, TEST_DATA);
         assert!(compressed_data.len() < TEST_DATA.len());
         let mut decoder = GzDecoder::new(compressed_data.as_slice());
-        let mut buf = Vec::new();
-        decoder.read_to_end(&mut buf).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        decoder.read_exact(&mut buf).unwrap();
         assert_eq!(buf, TEST_DATA);
     }
 }
@@ -195,8 +195,8 @@ fn compress_with_keep() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
     assert!(input_filename.exists());
 }
@@ -223,8 +223,8 @@ fn compress_with_remove() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
     assert!(!input_filename.exists());
 }

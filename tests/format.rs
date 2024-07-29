@@ -17,7 +17,7 @@ use std::{fs, io::Read};
 use flate2::read::{DeflateDecoder, GzDecoder, ZlibDecoder};
 use predicates::prelude::predicate;
 
-const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/MIT.txt");
+const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/CC-BY-4.0.txt");
 
 #[test]
 fn compress_to_gzip() {
@@ -38,8 +38,8 @@ fn compress_to_gzip() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }
 
@@ -62,8 +62,8 @@ fn compress_to_zlib() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = ZlibDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }
 
@@ -86,8 +86,8 @@ fn compress_to_deflate() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = DeflateDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }
 
@@ -108,8 +108,8 @@ fn compress_to_default_format() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = Vec::new();
-    decoder.read_to_end(&mut buf).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }
 
