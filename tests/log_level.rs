@@ -16,7 +16,7 @@ use std::fs;
 
 use predicates::prelude::predicate;
 
-const TEST_DATA: &[u8] = include_bytes!("data/compressed/fox.txt.zst");
+const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/CC-BY-4.0.txt");
 
 #[test]
 fn compress_with_off_log_level() {
@@ -69,7 +69,7 @@ fn compress_with_warn_log_level() {
         .arg(input_filename)
         .assert()
         .success()
-        .stderr(predicate::str::contains("input data is already compressed"));
+        .stderr(predicate::str::is_empty());
 }
 
 #[test]
@@ -87,13 +87,12 @@ fn compress_with_info_log_level() {
         .arg(input_filename)
         .assert()
         .success()
-        .stderr(predicate::str::contains("input data is already compressed"))
         .stderr(predicate::str::contains(format!(
             "Saving to: {}",
             output_filename.display()
         )))
         .stderr(predicate::str::contains(
-            "Original Size: 58 B, Compressed: 77 B, Compression: -32.76% Removed",
+            "Original Size: 18.22 KiB, Compressed: 5.47 KiB, Compression: 69.96% Removed",
         ));
 }
 
@@ -112,14 +111,13 @@ fn compress_with_debug_log_level() {
         .arg(input_filename)
         .assert()
         .success()
-        .stderr(predicate::str::contains("input data is already compressed"))
         .stderr(predicate::str::contains(format!(
             "Saving to: {}",
             output_filename.display()
         )))
         .stderr(predicate::str::contains("Iteration"))
         .stderr(predicate::str::contains(
-            "Original Size: 58 B, Compressed: 77 B, Compression: -32.76% Removed",
+            "Original Size: 18.22 KiB, Compressed: 5.47 KiB, Compression: 69.96% Removed",
         ));
 }
 
@@ -138,14 +136,13 @@ fn compress_with_trace_log_level() {
         .arg(input_filename)
         .assert()
         .success()
-        .stderr(predicate::str::contains("input data is already compressed"))
         .stderr(predicate::str::contains(format!(
             "Saving to: {}",
             output_filename.display()
         )))
         .stderr(predicate::str::contains("Iteration"))
         .stderr(predicate::str::contains(
-            "Original Size: 58 B, Compressed: 77 B, Compression: -32.76% Removed",
+            "Original Size: 18.22 KiB, Compressed: 5.47 KiB, Compression: 69.96% Removed",
         ));
 }
 

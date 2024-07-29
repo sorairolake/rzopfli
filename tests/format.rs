@@ -17,7 +17,7 @@ use std::{fs, io::Read};
 use flate2::read::{DeflateDecoder, GzDecoder, ZlibDecoder};
 use predicates::prelude::predicate;
 
-const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/MIT.txt");
+const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/CC-BY-4.0.txt");
 
 #[test]
 fn compress_to_gzip() {

@@ -20,7 +20,7 @@ use std::{
 use flate2::read::GzDecoder;
 use predicates::prelude::predicate;
 
-const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/MIT.txt");
+const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/CC-BY-4.0.txt");
 
 #[test]
 fn compress_from_stdin() {

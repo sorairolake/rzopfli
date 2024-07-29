@@ -3,9 +3,8 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use std::{
-    cmp,
     fs::{self, File},
-    io::{self, BufReader, IsTerminal, Read, Seek},
+    io::{self, BufReader, IsTerminal},
 };
 
 use anyhow::{bail, Context};
@@ -55,11 +54,11 @@ pub fn run() -> anyhow::Result<()> {
             Some(ref path) if path.as_os_str() != "-" => {
                 let f = File::open(path)
                     .with_context(|| format!("could not open {}", path.display()))?;
-                let size = f
-                    .metadata()
-                    .map(|m| m.len())
-                    .context("could not query metadata about input file")?;
-                (Input::File(f), Some(path), Some(size))
+                let size = f.metadata().ok().map(|m| m.len());
+                if size.is_none() {
+                    warn!("could not query metadata about input file");
+                }
+                (Input::File(f), Some(path), size)
             }
             _ => {
                 let stdin = io::stdin();
@@ -69,27 +68,6 @@ pub fn run() -> anyhow::Result<()> {
                 (Input::Stdin(stdin), None, None)
             }
         };
-        if let Input::File(ref f) = input.0 {
-            if let Some(size) = input.2.map(usize::try_from).transpose().ok().flatten() {
-                let mut f = f;
-                let mut file_header = vec![u8::default(); cmp::min(size, 262)];
-                f.read_exact(&mut file_header)
-                    .context("could not read file header")?;
-                f.rewind()
-                    .context("could not rewind to beginning of file")?;
-                if let Some(
-                    "application/gzip"
-                    | "application/x-bzip2"
-                    | "application/x-compress"
-                    | "application/x-lzip"
-                    | "application/x-xz"
-                    | "application/zstd",
-                ) = infer::get(&file_header).map(|t| t.mime_type())
-                {
-                    warn!("input data is already compressed");
-                }
-            }
-        }
 
         let mut output = match input.1 {
             Some(path) if !opt.stdout => {
@@ -121,11 +99,11 @@ pub fn run() -> anyhow::Result<()> {
             .context("data could not be compressed")?;
 
         if let Output::File(f) = output.0 {
-            let size = f
-                .metadata()
-                .map(|m| m.len())
-                .context("could not query metadata about output file")?;
-            output.2 = Some(size);
+            let size = f.metadata().ok().map(|m| m.len());
+            if size.is_none() {
+                warn!("could not query metadata about output file");
+            }
+            output.2 = size;
         }
         if let (Some(is), Some(os)) = (input.2, output.2) {
             #[allow(clippy::cast_precision_loss)]
@@ -140,9 +118,11 @@ pub fn run() -> anyhow::Result<()> {
 
         if opt.remove {
             if let Some(path) = input.1 {
-                fs::remove_file(path)
-                    .with_context(|| format!("could not remove {}", path.display()))?;
-                info!("{} has been removed", path.display());
+                if fs::remove_file(path).is_ok() {
+                    info!("{} has been removed", path.display());
+                } else {
+                    warn!("could not remove {}", path.display());
+                }
             }
         }
     }
