@@ -128,6 +128,28 @@ fn write_to_stdout_conflicts_with_remove() {
 }
 
 #[test]
+fn write_to_stdout_conflicts_with_suffix() {
+    let temp_dir = tempfile::tempdir().unwrap();
+    let temp_dir_path = temp_dir.path();
+    let input_filename = temp_dir_path.join("foo.txt");
+    fs::write(&input_filename, TEST_DATA).unwrap();
+    let mut output_filename = input_filename.clone();
+    output_filename.as_mut_os_string().push(".gzip");
+    assert!(!output_filename.exists());
+    utils::command::command()
+        .arg("-c")
+        .arg("-S")
+        .arg(".gzip")
+        .arg(input_filename)
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "the argument '--stdout' cannot be used with '--suffix <SUFFIX>'",
+        ));
+}
+
+#[test]
 fn compress_with_force() {
     {
         let temp_dir = tempfile::tempdir().unwrap();
@@ -248,4 +270,56 @@ fn compress_with_keep_conflicts_with_remove() {
         .stderr(predicate::str::contains(
             "the argument '--keep' cannot be used with '--rm'",
         ));
+}
+
+#[test]
+fn compress_with_suffix() {
+    let temp_dir = tempfile::tempdir().unwrap();
+    let temp_dir_path = temp_dir.path();
+    let input_filename = temp_dir_path.join("foo.txt");
+    fs::write(&input_filename, TEST_DATA).unwrap();
+    let mut output_filename = input_filename.clone();
+    output_filename.as_mut_os_string().push(".gzip");
+    assert!(!output_filename.exists());
+    utils::command::command()
+        .arg("-S")
+        .arg(".gzip")
+        .arg(&input_filename)
+        .assert()
+        .success();
+    let compressed_data = fs::read(output_filename).unwrap();
+    assert_ne!(compressed_data, TEST_DATA);
+    assert!(compressed_data.len() < TEST_DATA.len());
+    let mut decoder = GzDecoder::new(compressed_data.as_slice());
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    decoder.read_exact(&mut buf).unwrap();
+    assert_eq!(buf, TEST_DATA);
+    assert!(input_filename.exists());
+}
+
+#[test]
+fn compress_with_empty_suffix() {
+    let temp_dir = tempfile::tempdir().unwrap();
+    let temp_dir_path = temp_dir.path();
+    let input_filename = temp_dir_path.join("foo.txt");
+    fs::write(&input_filename, TEST_DATA).unwrap();
+    let output_filename = &input_filename;
+    assert!(output_filename.exists());
+    let command = utils::command::command()
+        .arg("-S")
+        .arg("")
+        .arg(&input_filename)
+        .assert()
+        .failure()
+        .code(73)
+        .stderr(predicate::str::contains("the suffix is an empty string"))
+        .stderr(predicate::str::contains(format!(
+            "could not open {}",
+            output_filename.display()
+        )));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains("The file exists. (os error 80)"));
+    } else {
+        command.stderr(predicate::str::contains("File exists (os error 17)"));
+    }
 }

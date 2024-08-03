@@ -39,7 +39,7 @@ const AFTER_LONG_HELP: &str = "See `rzopfli(1)` for more details.";
 )]
 pub struct Opt {
     /// Write to standard output, keep original files.
-    #[arg(short('c'), long, conflicts_with("remove"))]
+    #[arg(short('c'), long, conflicts_with("remove"), conflicts_with("suffix"))]
     pub stdout: bool,
 
     /// Force compression even if the output file already exists.
@@ -57,6 +57,14 @@ pub struct Opt {
     /// Remove input files after successful compression.
     #[arg(long("rm"))]
     pub remove: bool,
+
+    /// Use <SUFFIX> as the suffix for the target file instead of '.gz',
+    /// '.zlib', or '.deflate'.
+    ///
+    /// Any UTF-8 string can be specified as the suffix, but an inappropriate
+    /// value such as an empty string is deprecated.
+    #[arg(short('S'), long, value_name("SUFFIX"))]
+    pub suffix: Option<String>,
 
     /// Perform compression for the specified number of iterations.
     ///

@@ -17,7 +17,7 @@ use zopfli::{Format, Options};
 use crate::{cli::Opt, input::Input, output::Output};
 
 /// Runs the program and returns the result.
-#[allow(clippy::too_many_lines)]
+#[allow(clippy::cognitive_complexity, clippy::too_many_lines)]
 pub fn run() -> anyhow::Result<()> {
     let opt = Opt::parse();
 
@@ -40,11 +40,19 @@ pub fn run() -> anyhow::Result<()> {
         ..Default::default()
     };
     let format = opt.format.into();
-    let extension = match format {
-        Format::Gzip => ".gz",
-        Format::Zlib => ".zlib",
-        Format::Deflate => ".deflate",
+    #[allow(clippy::option_if_let_else)]
+    let extension = if let Some(ref suffix) = opt.suffix {
+        suffix
+    } else {
+        match format {
+            Format::Gzip => ".gz",
+            Format::Zlib => ".zlib",
+            Format::Deflate => ".deflate",
+        }
     };
+    if extension.is_empty() {
+        warn!("the suffix is an empty string");
+    }
 
     for file in opt
         .input
