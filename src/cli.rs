@@ -5,9 +5,12 @@
 use std::{
     io::{self, Write},
     num::NonZeroU64,
-    path::PathBuf,
+    ops::Deref,
+    path::{self, PathBuf},
+    str::FromStr,
 };
 
+use anyhow::bail;
 use clap::{CommandFactory, Parser, ValueEnum, ValueHint};
 use clap_complete::Generator;
 use simplelog::LevelFilter;
@@ -61,10 +64,10 @@ pub struct Opt {
     /// Use <SUFFIX> as the suffix for the target file instead of '.gz',
     /// '.zlib', or '.deflate'.
     ///
-    /// Any UTF-8 string can be specified as the suffix, but an inappropriate
-    /// value such as an empty string is deprecated.
+    /// Any non-empty UTF-8 string which starts with '.' and does not contains a
+    /// path separator can be specified as the suffix.
     #[arg(short('S'), long, value_name("SUFFIX"))]
-    pub suffix: Option<String>,
+    pub suffix: Option<Suffix>,
 
     /// Perform compression for the specified number of iterations.
     ///
@@ -167,6 +170,59 @@ impl Generator for Shell {
     }
 }
 
+/// The suffix for the target file.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Suffix(String);
+
+impl Deref for Suffix {
+    type Target = str;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl FromStr for Suffix {
+    type Err = anyhow::Error;
+
+    fn from_str(suffix: &str) -> anyhow::Result<Self> {
+        if suffix.is_empty() {
+            bail!("the suffix is an empty string");
+        }
+        if suffix.contains(path::MAIN_SEPARATOR) {
+            bail!("the suffix contains a path separator");
+        }
+        if !suffix.starts_with('.') {
+            bail!("the suffix does not starts with `.`");
+        }
+        Ok(Self(suffix.into()))
+    }
+}
+
+#[derive(Clone, Debug, Default, Eq, PartialEq, ValueEnum)]
+#[allow(clippy::doc_markdown)]
+pub enum Format {
+    /// The gzip file format, as defined in RFC 1952.
+    #[default]
+    Gzip,
+
+    /// The zlib file format, as defined in RFC 1950.
+    Zlib,
+
+    /// The raw DEFLATE stream format, as defined in RFC 1951.
+    Deflate,
+}
+
+impl From<Format> for zopfli::Format {
+    fn from(format: Format) -> Self {
+        match format {
+            Format::Gzip => Self::Gzip,
+            Format::Zlib => Self::Zlib,
+            Format::Deflate => Self::Deflate,
+        }
+    }
+}
+
 #[derive(Clone, Debug, Default, Eq, PartialEq, ValueEnum)]
 #[value(rename_all = "UPPER")]
 pub enum LogLevel {
@@ -203,30 +259,6 @@ impl From<LogLevel> for LevelFilter {
     }
 }
 
-#[derive(Clone, Debug, Default, Eq, PartialEq, ValueEnum)]
-#[allow(clippy::doc_markdown)]
-pub enum Format {
-    /// The gzip file format, as defined in RFC 1952.
-    #[default]
-    Gzip,
-
-    /// The zlib file format, as defined in RFC 1950.
-    Zlib,
-
-    /// The raw DEFLATE stream format, as defined in RFC 1951.
-    Deflate,
-}
-
-impl From<Format> for zopfli::Format {
-    fn from(format: Format) -> Self {
-        match format {
-            Format::Gzip => Self::Gzip,
-            Format::Zlib => Self::Zlib,
-            Format::Deflate => Self::Deflate,
-        }
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -247,18 +279,38 @@ mod tests {
     }
 
     #[test]
-    fn default_log_level() {
-        assert_eq!(LogLevel::default(), LogLevel::Info);
+    fn deref_suffix() {
+        assert_eq!(&*Suffix(String::default()), "");
     }
 
     #[test]
-    fn from_log_level_to_level_filter() {
-        assert_eq!(LevelFilter::from(LogLevel::Off), LevelFilter::Off);
-        assert_eq!(LevelFilter::from(LogLevel::Error), LevelFilter::Error);
-        assert_eq!(LevelFilter::from(LogLevel::Warn), LevelFilter::Warn);
-        assert_eq!(LevelFilter::from(LogLevel::Info), LevelFilter::Info);
-        assert_eq!(LevelFilter::from(LogLevel::Debug), LevelFilter::Debug);
-        assert_eq!(LevelFilter::from(LogLevel::Trace), LevelFilter::Trace);
+    fn from_str_suffix() {
+        assert_eq!(Suffix::from_str(".gz").unwrap(), Suffix(".gz".into()));
+    }
+
+    #[test]
+    fn from_str_suffix_with_empty_string() {
+        assert!(Suffix::from_str("")
+            .unwrap_err()
+            .to_string()
+            .contains("the suffix is an empty string"));
+    }
+
+    #[test]
+    fn from_str_suffix_with_path_separator() {
+        let suffix = if cfg!(windows) { r"foo\bar" } else { "foo/bar" };
+        assert!(Suffix::from_str(suffix)
+            .unwrap_err()
+            .to_string()
+            .contains("the suffix contains a path separator"));
+    }
+
+    #[test]
+    fn from_str_suffix_not_starts_with_dot() {
+        assert!(Suffix::from_str("gz")
+            .unwrap_err()
+            .to_string()
+            .contains("the suffix does not starts with `.`"));
     }
 
     #[test]
@@ -280,5 +332,20 @@ mod tests {
             zopfli::Format::from(Format::Deflate),
             zopfli::Format::Deflate
         ));
+    }
+
+    #[test]
+    fn default_log_level() {
+        assert_eq!(LogLevel::default(), LogLevel::Info);
+    }
+
+    #[test]
+    fn from_log_level_to_level_filter() {
+        assert_eq!(LevelFilter::from(LogLevel::Off), LevelFilter::Off);
+        assert_eq!(LevelFilter::from(LogLevel::Error), LevelFilter::Error);
+        assert_eq!(LevelFilter::from(LogLevel::Warn), LevelFilter::Warn);
+        assert_eq!(LevelFilter::from(LogLevel::Info), LevelFilter::Info);
+        assert_eq!(LevelFilter::from(LogLevel::Debug), LevelFilter::Debug);
+        assert_eq!(LevelFilter::from(LogLevel::Trace), LevelFilter::Trace);
     }
 }

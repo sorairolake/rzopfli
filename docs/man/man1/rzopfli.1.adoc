@@ -4,7 +4,7 @@
 
 = rzopfli(1)
 // Specify in UTC.
-:docdate: 2024-08-03
+:docdate: 2024-08-04
 :doctype: manpage
 ifdef::revnumber[:mansource: rzopfli {revnumber}]
 ifndef::revnumber[:mansource: rzopfli]
@@ -81,8 +81,8 @@ _FILE_::
 *-S*, *--suffix* _SUFFIX_::
 
   Use _SUFFIX_ as the suffix for the target file instead of `.gz`, `.zlib`, or
-  `.deflate`. Any UTF-8 string can be specified as the suffix, but an
-  inappropriate value such as an empty string is deprecated. This option
+  `.deflate`. Any non-empty UTF-8 string which starts with `.` and does not
+  contains a path separator can be specified as the suffix. This option
   conflicts with *--stdout*.
 
 *-i*, *--iteration* _TIMES_::

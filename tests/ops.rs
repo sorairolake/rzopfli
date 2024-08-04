@@ -298,28 +298,52 @@ fn compress_with_suffix() {
 }
 
 #[test]
-fn compress_with_empty_suffix() {
-    let temp_dir = tempfile::tempdir().unwrap();
-    let temp_dir_path = temp_dir.path();
-    let input_filename = temp_dir_path.join("foo.txt");
-    fs::write(&input_filename, TEST_DATA).unwrap();
-    let output_filename = &input_filename;
-    assert!(output_filename.exists());
-    let command = utils::command::command()
-        .arg("-S")
-        .arg("")
-        .arg(&input_filename)
-        .assert()
-        .failure()
-        .code(73)
-        .stderr(predicate::str::contains("the suffix is an empty string"))
-        .stderr(predicate::str::contains(format!(
-            "could not open {}",
-            output_filename.display()
-        )));
-    if cfg!(windows) {
-        command.stderr(predicate::str::contains("The file exists. (os error 80)"));
-    } else {
-        command.stderr(predicate::str::contains("File exists (os error 17)"));
+fn compress_with_invalid_suffix() {
+    {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let temp_dir_path = temp_dir.path();
+        let input_filename = temp_dir_path.join("foo.txt");
+        fs::write(&input_filename, TEST_DATA).unwrap();
+        utils::command::command()
+            .arg("-S")
+            .arg("")
+            .arg(&input_filename)
+            .assert()
+            .failure()
+            .code(2)
+            .stderr(predicate::str::contains("the suffix is an empty string"));
+    }
+    {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let temp_dir_path = temp_dir.path();
+        let input_filename = temp_dir_path.join("foo.txt");
+        fs::write(&input_filename, TEST_DATA).unwrap();
+        let suffix = if cfg!(windows) { r"foo\bar" } else { "foo/bar" };
+        utils::command::command()
+            .arg("-S")
+            .arg(suffix)
+            .arg(&input_filename)
+            .assert()
+            .failure()
+            .code(2)
+            .stderr(predicate::str::contains(
+                "the suffix contains a path separator",
+            ));
+    }
+    {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let temp_dir_path = temp_dir.path();
+        let input_filename = temp_dir_path.join("foo.txt");
+        fs::write(&input_filename, TEST_DATA).unwrap();
+        utils::command::command()
+            .arg("-S")
+            .arg("gzip")
+            .arg(&input_filename)
+            .assert()
+            .failure()
+            .code(2)
+            .stderr(predicate::str::contains(
+                "the suffix does not starts with `.`",
+            ));
     }
 }
