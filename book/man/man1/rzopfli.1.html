@@ -22,10 +22,13 @@ specified.</div><div class=paragraph><p>If <em>FILE</em> is a file, the processe
 the input filename with the appropriate extension (either <strong>.gz</strong>, <strong>.zlib</strong>, or
 <strong>.deflate</strong>) appended, unless <strong>--stdout</strong> is specified.</div></div></div><div class=sect1><h2 id=_positional_arguments><a class=anchor href=#_positional_arguments></a>POSITIONAL ARGUMENTS</h2><div class=sectionbody><div class=dlist><dl><dt class=hdlist1><em>FILE</em><dd><p>Files to compress. If <em>FILE</em> is not specified, or if "-" is specified, data
 will be read from standard input.</dl></div></div></div><div class=sect1><h2 id=_options><a class=anchor href=#_options></a>OPTIONS</h2><div class=sectionbody><div class=dlist><dl><dt class=hdlist1><strong>-c</strong>, <strong>--stdout</strong><dd><p>Write to standard output, keep original files. This option conflicts with
-<strong>--rm</strong>.<dt class=hdlist1><strong>-f</strong>, <strong>--force</strong><dd><p>Force compression even if the output file already exists. This option allows
+<strong>--rm</strong> and <strong>--suffix</strong>.<dt class=hdlist1><strong>-f</strong>, <strong>--force</strong><dd><p>Force compression even if the output file already exists. This option allows
 you to overwrite existing files.<dt class=hdlist1><strong>-k</strong>, <strong>--keep</strong><dd><p>Keep input files. This is the default behavior. This option conflicts with
 <strong>--rm</strong>.<dt class=hdlist1><strong>--rm</strong><dd><p>Remove input files after successful compression. This option conflicts with
-<strong>--stdout</strong> and <strong>--keep</strong>.<dt class=hdlist1><strong>-i</strong>, <strong>--iteration</strong> <em>TIMES</em><dd><p>Perform compression for the specified number of iterations. Higher numbers
+<strong>--stdout</strong> and <strong>--keep</strong>.<dt class=hdlist1><strong>-S</strong>, <strong>--suffix</strong> <em>SUFFIX</em><dd><p>Use <em>SUFFIX</em> as the suffix for the target file instead of <code>.gz</code>, <code>.zlib</code>, or
+<code>.deflate</code>. Any non-empty UTF-8 string which starts with <code>.</code> and does not
+contains a path separator can be specified as the suffix. This option
+conflicts with <strong>--stdout</strong>.<dt class=hdlist1><strong>-i</strong>, <strong>--iteration</strong> <em>TIMES</em><dd><p>Perform compression for the specified number of iterations. Higher numbers
 produce higher compression ratio at the expense of compression speed. Default
 is 15.<dt class=hdlist1><strong>--format</strong> <em>FORMAT</em><dd><p>Output to the specified format.<div class=dlist><dl><dt class=hdlist1>The possible values are:<dd><div class=dlist><dl><dt class=hdlist1><strong>gzip</strong><dd><p>The gzip file format, as defined in <a href=https://datatracker.ietf.org/doc/html/rfc1952>RFC 1952</a>. This value will
 append the extension <strong>.gz</strong> to the input filename. This is the default
