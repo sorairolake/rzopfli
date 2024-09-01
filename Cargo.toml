@@ -22,8 +22,8 @@ include = ["/LICENSES", "/README.md", "/src"]
 [dependencies]
 anyhow = "1.0.86"
 byte-unit = "5.1.4"
-clap = { version = "4.5.13", features = ["derive", "wrap_help"] }
-clap_complete = "4.5.12"
+clap = { version = "4.5.16", features = ["derive", "wrap_help"] }
+clap_complete = "4.5.24"
 clap_complete_nushell = "4.5.3"
 log = "0.4.22"
 simplelog = "0.12.2"
@@ -31,10 +31,10 @@ sysexits = "0.8.1"
 zopfli = "0.8.1"
 
 [dev-dependencies]
-assert_cmd = "2.0.15"
-flate2 = "1.0.31"
+assert_cmd = "2.0.16"
+flate2 = "1.0.33"
 predicates = "3.1.2"
-tempfile = "3.11.0"
+tempfile = "3.12.0"
 
 [profile.release]
 codegen-units = 1
