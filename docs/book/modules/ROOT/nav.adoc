@@ -10,6 +10,7 @@
 * xref:man/man1/rzopfli.1.adoc[`rzopfli(1)`]
 
 .Resources
+* xref:repository.adoc[]
 * xref:changelog.adoc[]
 * xref:contributing.adoc[]
 * xref:authors.adoc[]
