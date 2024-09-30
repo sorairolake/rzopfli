@@ -34,7 +34,7 @@ zopfli = "0.8.1"
 assert_cmd = "2.0.16"
 flate2 = "1.0.34"
 predicates = "3.1.2"
-tempfile = "3.12.0"
+tempfile = "3.13.0"
 
 [profile.release]
 codegen-units = 1
