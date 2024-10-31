@@ -23,11 +23,11 @@ include = ["/LICENSES", "/README.md", "/src"]
 anyhow = "1.0.91"
 byte-unit = "5.1.4"
 clap = { version = "4.5.20", features = ["derive", "wrap_help"] }
-clap_complete = "4.5.35"
+clap_complete = "4.5.36"
 clap_complete_nushell = "4.5.4"
 log = "0.4.22"
 simplelog = "0.12.2"
-sysexits = "0.8.2"
+sysexits = "0.8.4"
 zopfli = "0.8.1"
 
 [dev-dependencies]
