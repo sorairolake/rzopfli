@@ -32,7 +32,7 @@ const LONG_VERSION: &str = concat!(
 const AFTER_LONG_HELP: &str = "See `rzopfli(1)` for more details.";
 
 #[derive(Debug, Parser)]
-#[allow(clippy::doc_markdown, clippy::struct_excessive_bools)]
+#[allow(clippy::struct_excessive_bools)]
 #[command(
     version,
     long_version(LONG_VERSION),
@@ -200,7 +200,6 @@ impl FromStr for Suffix {
 }
 
 #[derive(Clone, Debug, Default, Eq, PartialEq, ValueEnum)]
-#[allow(clippy::doc_markdown)]
 pub enum Format {
     /// The gzip file format, as defined in RFC 1952.
     #[default]
