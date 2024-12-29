@@ -112,6 +112,10 @@ Please see [CHANGELOG.adoc].
 
 Please see [CONTRIBUTING.adoc].
 
+## Home page
+
+<https://sorairolake.github.io/rzopfli/>
+
 ## License
 
 Copyright (C) 2024 Shun Sakai (see [AUTHORS.adoc])
