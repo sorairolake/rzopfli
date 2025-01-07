@@ -5,9 +5,9 @@
 = rzopfli(1)
 // Specify in UTC.
 :docdate: 2024-08-04
+:revnumber: 0.1.3
 :doctype: manpage
-ifdef::revnumber[:mansource: rzopfli {revnumber}]
-ifndef::revnumber[:mansource: rzopfli]
+:mansource: rzopfli {revnumber}
 :manmanual: General Commands Manual
 ifndef::site-gen-antora[:includedir: ./include]
 :github-url: https://github.com
