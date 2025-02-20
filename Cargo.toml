@@ -17,8 +17,6 @@ keywords = ["compression", "deflate", "gzip", "zlib", "zopfli"]
 categories = ["command-line-utilities", "compression"]
 include = ["/LICENSES", "/README.md", "/src"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 anyhow = "1.0.95"
 byte-unit = "5.1.6"
