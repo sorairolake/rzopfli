@@ -37,7 +37,7 @@ fn compress_with_1_iteration() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = [u8::default(); TEST_DATA.len()];
+    let mut buf = vec![u8::default(); TEST_DATA.len()];
     decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }
@@ -68,7 +68,7 @@ fn compress_with_10_iterations() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = [u8::default(); TEST_DATA.len()];
+    let mut buf = vec![u8::default(); TEST_DATA.len()];
     decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }
@@ -99,7 +99,7 @@ fn compress_with_50_iterations() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = [u8::default(); TEST_DATA.len()];
+    let mut buf = vec![u8::default(); TEST_DATA.len()];
     decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
 }

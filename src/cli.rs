@@ -112,9 +112,9 @@ pub struct Opt {
 
 impl Opt {
     /// Generates shell completion and print it.
-    pub fn print_completion(gen: impl Generator) {
+    pub fn print_completion(generator: impl Generator) {
         clap_complete::generate(
-            gen,
+            generator,
             &mut Self::command(),
             Self::command().get_name(),
             &mut io::stdout(),
@@ -289,27 +289,33 @@ mod tests {
 
     #[test]
     fn from_str_suffix_with_empty_string() {
-        assert!(Suffix::from_str("")
-            .unwrap_err()
-            .to_string()
-            .contains("the suffix is an empty string"));
+        assert!(
+            Suffix::from_str("")
+                .unwrap_err()
+                .to_string()
+                .contains("the suffix is an empty string")
+        );
     }
 
     #[test]
     fn from_str_suffix_with_path_separator() {
         let suffix = if cfg!(windows) { r"foo\bar" } else { "foo/bar" };
-        assert!(Suffix::from_str(suffix)
-            .unwrap_err()
-            .to_string()
-            .contains("the suffix contains a path separator"));
+        assert!(
+            Suffix::from_str(suffix)
+                .unwrap_err()
+                .to_string()
+                .contains("the suffix contains a path separator")
+        );
     }
 
     #[test]
     fn from_str_suffix_not_starts_with_dot() {
-        assert!(Suffix::from_str("gz")
-            .unwrap_err()
-            .to_string()
-            .contains("the suffix does not starts with `.`"));
+        assert!(
+            Suffix::from_str("gz")
+                .unwrap_err()
+                .to_string()
+                .contains("the suffix does not starts with `.`")
+        );
     }
 
     #[test]
