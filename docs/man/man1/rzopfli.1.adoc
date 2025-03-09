@@ -9,7 +9,6 @@
 :doctype: manpage
 :mansource: rzopfli {revnumber}
 :manmanual: General Commands Manual
-ifndef::site-gen-antora[:includedir: ./include]
 :github-url: https://github.com
 :zopfli-repo-url: {github-url}/google/zopfli
 :ietf-datatracker: https://datatracker.ietf.org
@@ -17,6 +16,7 @@ ifndef::site-gen-antora[:includedir: ./include]
 :rfc1952: {datatracker-html-doc}/rfc1952
 :rfc1950: {datatracker-html-doc}/rfc1950
 :rfc1951: {datatracker-html-doc}/rfc1951
+:repo-url: {github-url}/sorairolake/rzopfli
 
 == NAME
 
@@ -183,14 +183,61 @@ _FILE_::
 
       Zsh.
 
-ifndef::site-gen-antora[include::{includedir}/section-exit-status.adoc[]]
-ifdef::site-gen-antora[include::partial$man/man1/include/section-exit-status.adoc[]]
+== EXIT STATUS
+
+*0*::
+
+  Successful program execution.
+
+*1*::
+
+  An error occurred.
+
+*2*::
+
+  An error occurred while parsing command-line arguments.
+
+*65*::
+
+  The input data was incorrect in some way.
+
+*66*::
+
+  An input file (not a system file) did not exist or was not readable.
+
+*69*::
+
+  A service is unavailable.
+
+*70*::
+
+  An internal software error has been detected.
+
+*71*::
+
+  An operating system error has been detected.
+
+*73*::
+
+  A (user specified) output file cannot be created.
+
+*74*::
+
+  An error occurred while doing I/O on some file.
+
+*75*::
+
+  Temporary failure, indicating something that is not really an error.
+
+*77*::
+
+  You did not have sufficient permission to perform the operation.
 
 == NOTES
 
 Source repository:{blank}::
 
-  {github-url}/sorairolake/rzopfli
+  {repo-url}
 
 == EXAMPLES
 
@@ -214,11 +261,23 @@ Compress a file into the zlib format:{blank}::
 
   $ *rzopfli --format zlib foo.txt*
 
-ifndef::site-gen-antora[include::{includedir}/section-reporting-bugs.adoc[]]
-ifdef::site-gen-antora[include::partial$man/man1/include/section-reporting-bugs.adoc[]]
+== REPORTING BUGS
 
-ifndef::site-gen-antora[include::{includedir}/section-copyright.adoc[]]
-ifdef::site-gen-antora[include::partial$man/man1/include/section-copyright.adoc[]]
+Report bugs to:{blank}::
+
+  {repo-url}/issues
+
+== COPYRIGHT
+
+Copyright (C) 2024 Shun Sakai
+
+. This program is distributed under the terms of either the Apache License 2.0
+  or the MIT License.
+. This manual page is distributed under the terms of the Creative Commons
+  Attribution 4.0 International Public License.
+
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
 
 == SEE ALSO
 
