@@ -4,7 +4,7 @@
 
 = rzopfli(1)
 // Specify in UTC.
-:docdate: 2024-08-04
+:docdate: 2025-03-10
 :revnumber: 0.1.3
 :doctype: manpage
 :mansource: rzopfli {revnumber}
@@ -16,6 +16,7 @@
 :rfc1952: {datatracker-html-doc}/rfc1952
 :rfc1950: {datatracker-html-doc}/rfc1950
 :rfc1951: {datatracker-html-doc}/rfc1951
+:sysexits-man-page-url: https://man.openbsd.org/sysexits
 :repo-url: {github-url}/sorairolake/rzopfli
 
 == NAME
@@ -197,41 +198,8 @@ _FILE_::
 
   An error occurred while parsing command-line arguments.
 
-*65*::
-
-  The input data was incorrect in some way.
-
-*66*::
-
-  An input file (not a system file) did not exist or was not readable.
-
-*69*::
-
-  A service is unavailable.
-
-*70*::
-
-  An internal software error has been detected.
-
-*71*::
-
-  An operating system error has been detected.
-
-*73*::
-
-  A (user specified) output file cannot be created.
-
-*74*::
-
-  An error occurred while doing I/O on some file.
-
-*75*::
-
-  Temporary failure, indicating something that is not really an error.
-
-*77*::
-
-  You did not have sufficient permission to perform the operation.
+Exit statuses other than these are defined by
+{sysexits-man-page-url}[`<sysexits.h>`].
 
 == NOTES
 
