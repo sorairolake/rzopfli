@@ -2,14 +2,6 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-// Lint levels of rustc.
-#![forbid(unsafe_code)]
-#![deny(missing_debug_implementations)]
-#![warn(rust_2018_idioms)]
-// Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
-#![allow(clippy::multiple_crate_versions)]
-
 mod utils;
 
 use std::{
@@ -34,7 +26,7 @@ fn compress_from_stdin() {
         assert_ne!(compressed_data, TEST_DATA);
         assert!(compressed_data.len() < TEST_DATA.len());
         let mut decoder = GzDecoder::new(compressed_data.as_slice());
-        let mut buf = [u8::default(); TEST_DATA.len()];
+        let mut buf = vec![u8::default(); TEST_DATA.len()];
         decoder.read_exact(&mut buf).unwrap();
         assert_eq!(buf, TEST_DATA);
         assert!(output.status.success());
@@ -49,7 +41,7 @@ fn compress_from_stdin() {
         assert_ne!(compressed_data, TEST_DATA);
         assert!(compressed_data.len() < TEST_DATA.len());
         let mut decoder = GzDecoder::new(compressed_data.as_slice());
-        let mut buf = [u8::default(); TEST_DATA.len()];
+        let mut buf = vec![u8::default(); TEST_DATA.len()];
         decoder.read_exact(&mut buf).unwrap();
         assert_eq!(buf, TEST_DATA);
         assert!(output.status.success());
@@ -65,7 +57,7 @@ fn compress_from_stdin() {
         assert_ne!(compressed_data, TEST_DATA);
         assert!(compressed_data.len() < TEST_DATA.len());
         let mut decoder = GzDecoder::new(compressed_data.as_slice());
-        let mut buf = [u8::default(); TEST_DATA.len()];
+        let mut buf = vec![u8::default(); TEST_DATA.len()];
         decoder.read_exact(&mut buf).unwrap();
         assert_eq!(buf, TEST_DATA);
         assert!(output.status.success());
@@ -81,7 +73,7 @@ fn compress_from_stdin() {
         assert_ne!(compressed_data, TEST_DATA);
         assert!(compressed_data.len() < TEST_DATA.len());
         let mut decoder = GzDecoder::new(compressed_data.as_slice());
-        let mut buf = [u8::default(); TEST_DATA.len()];
+        let mut buf = vec![u8::default(); TEST_DATA.len()];
         decoder.read_exact(&mut buf).unwrap();
         assert_eq!(buf, TEST_DATA);
         assert!(output.status.success());
@@ -103,7 +95,7 @@ fn write_to_stdout() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = [u8::default(); TEST_DATA.len()];
+    let mut buf = vec![u8::default(); TEST_DATA.len()];
     decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
     assert!(output.status.success());
@@ -193,7 +185,7 @@ fn compress_with_force() {
         assert_ne!(compressed_data, TEST_DATA);
         assert!(compressed_data.len() < TEST_DATA.len());
         let mut decoder = GzDecoder::new(compressed_data.as_slice());
-        let mut buf = [u8::default(); TEST_DATA.len()];
+        let mut buf = vec![u8::default(); TEST_DATA.len()];
         decoder.read_exact(&mut buf).unwrap();
         assert_eq!(buf, TEST_DATA);
     }
@@ -217,7 +209,7 @@ fn compress_with_keep() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = [u8::default(); TEST_DATA.len()];
+    let mut buf = vec![u8::default(); TEST_DATA.len()];
     decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
     assert!(input_filename.exists());
@@ -245,7 +237,7 @@ fn compress_with_remove() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = [u8::default(); TEST_DATA.len()];
+    let mut buf = vec![u8::default(); TEST_DATA.len()];
     decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
     assert!(!input_filename.exists());
@@ -291,7 +283,7 @@ fn compress_with_suffix() {
     assert_ne!(compressed_data, TEST_DATA);
     assert!(compressed_data.len() < TEST_DATA.len());
     let mut decoder = GzDecoder::new(compressed_data.as_slice());
-    let mut buf = [u8::default(); TEST_DATA.len()];
+    let mut buf = vec![u8::default(); TEST_DATA.len()];
     decoder.read_exact(&mut buf).unwrap();
     assert_eq!(buf, TEST_DATA);
     assert!(input_filename.exists());

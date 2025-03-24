@@ -2,11 +2,11 @@
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
-alias all := default
 alias lint := clippy
 
 # Run default recipe
-default: build
+@_default:
+    just -l
 
 # Build a package
 @build:
@@ -30,7 +30,7 @@ default: build
 
 # Run the formatter with options
 @fmt-with-options:
-    cargo fmt -- --config "format_code_in_doc_comments=true,wrap_comments=true"
+    cargo +nightly fmt
 
 # Run the linter
 @clippy:
@@ -54,4 +54,5 @@ default: build
 
 # Increment the version
 @bump part:
-    cargo set-version --bump {{part}}
+    bump-my-version bump {{ part }}
+    cargo set-version --bump {{ part }}

@@ -7,7 +7,7 @@ use std::{
     io::{self, BufReader, IsTerminal},
 };
 
-use anyhow::{bail, Context};
+use anyhow::{Context, bail};
 use byte_unit::{Byte, UnitType};
 use clap::Parser;
 use log::{info, warn};

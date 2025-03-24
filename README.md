@@ -94,6 +94,16 @@ Please see the following:
 
 - [`rzopfli(1)`]
 
+## Source code
+
+The upstream repository is available at
+<https://github.com/sorairolake/rzopfli.git>.
+
+The source code is also available at:
+
+- <https://gitlab.com/sorairolake/rzopfli.git>
+- <https://codeberg.org/sorairolake/rzopfli.git>
+
 ## Changelog
 
 Please see [CHANGELOG.adoc].
@@ -102,16 +112,20 @@ Please see [CHANGELOG.adoc].
 
 Please see [CONTRIBUTING.adoc].
 
+## Home page
+
+<https://sorairolake.github.io/rzopfli/>
+
 ## License
 
-Copyright &copy; 2024 Shun Sakai (see [AUTHORS.adoc])
+Copyright (C) 2024 Shun Sakai (see [AUTHORS.adoc])
 
-1. This program is distributed under the terms of either the _Apache License
-   2.0_ or the _MIT License_.
-2. Some files are distributed under the terms of the _Creative Commons
-   Attribution 4.0 International Public License_.
+1.  This program is distributed under the terms of either the _Apache License
+    2.0_ or the _MIT License_.
+2.  Some files are distributed under the terms of the _Creative Commons
+    Attribution 4.0 International Public License_.
 
-This project is compliant with version 3.2 of the [_REUSE Specification_]. See
+This project is compliant with version 3.3 of the [_REUSE Specification_]. See
 copyright notices of individual files for more details on copyright and
 licensing information.
 
@@ -128,4 +142,4 @@ licensing information.
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: CONTRIBUTING.adoc
 [AUTHORS.adoc]: AUTHORS.adoc
-[_REUSE Specification_]: https://reuse.software/spec/
+[_REUSE Specification_]: https://reuse.software/spec-3.3/

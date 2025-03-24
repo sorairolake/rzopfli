@@ -16,7 +16,7 @@ permissions:
 jobs:
   get-version:
     name: Get version
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       version: ${{ steps.get_version.outputs.version }}
       version_without_v: ${{ steps.get_version_without_v.outputs.version-without-v }}
@@ -43,10 +43,10 @@ jobs:
           - x86_64-pc-windows-msvc
         include:
           - target: aarch64-unknown-linux-musl
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             use-cross: true
           - target: x86_64-unknown-linux-musl
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             use-cross: true
           - target: aarch64-apple-darwin
             os: macos-14
@@ -66,18 +66,18 @@ jobs:
           targets: ${{ matrix.target }}
       - name: Install cross
         if: ${{ matrix.use-cross }}
-        uses: taiki-e/install-action@v2.42.14
+        uses: taiki-e/install-action@v2.49.34
         with:
           tool: cross
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.3
+        uses: Swatinem/rust-cache@v2.7.8
         with:
           key: ${{ matrix.target }}
       - name: Setup Ruby
         if: matrix.os != 'windows-2022' && !matrix.use-cross
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2
+          ruby-version: 3.3
       - name: Install Asciidoctor
         if: matrix.os != 'windows-2022' && !matrix.use-cross
         run: |
@@ -109,7 +109,7 @@ jobs:
           fi
 
           if [ "${{ matrix.os }}" != "windows-2022" ] ; then
-            tar -cvf "${package}.tar" "${package}"
+            tar -cv --format=pax -f "${package}.tar" "${package}"
             zstd --rm -19 -v "${package}.tar"
           else
             7z a -bb -mx=9 -m0=LZMA "${package}.7z" "${package}"
@@ -126,7 +126,7 @@ jobs:
     needs:
       - get-version
       - build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -137,7 +137,7 @@ jobs:
           sha256sum rzopfli-* | tee sha256sums.txt
           b2sum rzopfli-* | tee b2sums.txt
       - name: Release
-        uses: softprops/action-gh-release@v2.0.8
+        uses: softprops/action-gh-release@v2.2.1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           draft: true
