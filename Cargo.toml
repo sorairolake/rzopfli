@@ -23,7 +23,7 @@ byte-unit = "5.1.6"
 clap = { version = "4.5.32", features = ["derive", "wrap_help"] }
 clap_complete = "4.5.47"
 clap_complete_nushell = "4.5.5"
-log = "0.4.26"
+log = "0.4.27"
 simplelog = "0.12.2"
 sysexits = "0.9.0"
 zopfli = "0.8.1"
