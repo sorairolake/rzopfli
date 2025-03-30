@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/v0.1.4\...HEAD[Unreleased]
+
+=== Added
+
+* Add demo animation ({pull-request-url}/150[#150])
+
 == {compare-url}/v0.1.3\...v0.1.4[0.1.4] - 2025-03-24
 
 === Changed

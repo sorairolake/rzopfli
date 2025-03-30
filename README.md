@@ -14,6 +14,8 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 **rzopfli** is a lossless data compression tool which uses the [Zopfli]
 compression algorithm.
 
+![Demo animation](assets/demo.gif)
+
 ## Installation
 
 ### From source

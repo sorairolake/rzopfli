@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2025 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+settings:
+  width: 120
+  height: 30
+  title: rzopfli demo
+
+instructions:
+  - !Marker Basic usage
+  - !Command
+    command: file gzip/zopfli-1.0.3.tar* zopfli/zopfli-1.0.3.tar*
+  - !Wait 1s
+  - !Command
+    command: dua -A gzip/zopfli-1.0.3.tar* zopfli/zopfli-1.0.3.tar*
+  - !Wait 1s
+  - !Command
+    command: gzip -k --best gzip/zopfli-1.0.3.tar
+  - !Wait 1s
+  - !Command
+    command: rzopfli -k zopfli/zopfli-1.0.3.tar
+  - !Wait 1s
+  - !Command
+    command: file gzip/zopfli-1.0.3.tar* zopfli/zopfli-1.0.3.tar*
+  - !Wait 1s
+  - !Command
+    command: dua -A gzip/zopfli-1.0.3.tar* zopfli/zopfli-1.0.3.tar*
+  - !Wait 3s
