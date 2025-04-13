@@ -101,11 +101,6 @@ Please see the following:
 The upstream repository is available at
 <https://github.com/sorairolake/rzopfli.git>.
 
-The source code is also available at:
-
-- <https://gitlab.com/sorairolake/rzopfli.git>
-- <https://codeberg.org/sorairolake/rzopfli.git>
-
 ## Changelog
 
 Please see [CHANGELOG.adoc].
