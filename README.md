@@ -135,7 +135,7 @@ licensing information.
 [Zopfli]: https://github.com/google/zopfli
 [release page]: https://github.com/sorairolake/rzopfli/releases
 [BUILD.adoc]: BUILD.adoc
-[`rzopfli(1)`]: https://sorairolake.github.io/rzopfli/book/man/man1/rzopfli.1.html
+[`rzopfli(1)`]: docs/man/man1/rzopfli.1.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: CONTRIBUTING.adoc
 [AUTHORS.adoc]: AUTHORS.adoc
