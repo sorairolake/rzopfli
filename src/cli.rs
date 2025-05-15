@@ -44,7 +44,7 @@ pub struct Opt {
     ///
     /// Any non-empty UTF-8 string which starts with '.' and does not contains a
     /// path separator can be specified as the suffix.
-    #[arg(short('S'), long, value_name("SUFFIX"))]
+    #[arg(short('S'), long)]
     pub suffix: Option<Suffix>,
 
     /// Perform compression for the specified number of iterations.
@@ -55,13 +55,7 @@ pub struct Opt {
     pub iteration: NonZeroU64,
 
     /// Output to the specified format.
-    #[arg(
-        long,
-        value_enum,
-        default_value_t,
-        value_name("FORMAT"),
-        ignore_case(true)
-    )]
+    #[arg(long, value_enum, default_value_t, ignore_case(true))]
     pub format: Format,
 
     /// The minimum log level to print.
