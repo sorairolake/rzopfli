@@ -5,7 +5,7 @@
 = rzopfli(1)
 // Specify in UTC.
 :docdate: 2025-05-12
-:revnumber: 0.1.4
+:revnumber: 0.1.5
 :doctype: manpage
 :mansource: rzopfli {revnumber}
 :manmanual: General Commands Manual

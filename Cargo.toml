@@ -4,7 +4,7 @@
 
 [package]
 name = "rzopfli"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2024"
 rust-version = "1.85.0"
