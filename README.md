@@ -1,7 +1,7 @@
 <!--
 SPDX-FileCopyrightText: 2024 Shun Sakai
 
-SPDX-License-Identifier: Apache-2.0 OR MIT
+SPDX-License-Identifier: CC-BY-4.0
 -->
 
 # rzopfli
@@ -13,6 +13,8 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 
 **rzopfli** is a lossless data compression tool which uses the [Zopfli]
 compression algorithm.
+
+![Demo animation](assets/demo.gif)
 
 ## Installation
 
@@ -99,11 +101,6 @@ Please see the following:
 The upstream repository is available at
 <https://github.com/sorairolake/rzopfli.git>.
 
-The source code is also available at:
-
-- <https://gitlab.com/sorairolake/rzopfli.git>
-- <https://codeberg.org/sorairolake/rzopfli.git>
-
 ## Changelog
 
 Please see [CHANGELOG.adoc].
@@ -138,7 +135,7 @@ licensing information.
 [Zopfli]: https://github.com/google/zopfli
 [release page]: https://github.com/sorairolake/rzopfli/releases
 [BUILD.adoc]: BUILD.adoc
-[`rzopfli(1)`]: https://sorairolake.github.io/rzopfli/book/man/man1/rzopfli.1.html
+[`rzopfli(1)`]: docs/man/man1/rzopfli.1.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: CONTRIBUTING.adoc
 [AUTHORS.adoc]: AUTHORS.adoc

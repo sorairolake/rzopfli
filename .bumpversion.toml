@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 [tool.bumpversion]
-current_version = "0.1.4"
+current_version = "0.1.5"
 
 [[tool.bumpversion.files]]
 filename = "docs/man/man1/rzopfli.1.adoc"

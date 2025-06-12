@@ -15,31 +15,9 @@ use clap::{CommandFactory, Parser, ValueEnum, ValueHint};
 use clap_complete::Generator;
 use simplelog::LevelFilter;
 
-const LONG_VERSION: &str = concat!(
-    env!("CARGO_PKG_VERSION"),
-    '\n',
-    "Copyright (C) 2024 Shun Sakai\n",
-    '\n',
-    "This program is distributed under the terms of either the Apache License 2.0 or\n",
-    "the MIT License.\n",
-    '\n',
-    "This is free software: you are free to change and redistribute it. There is NO\n",
-    "WARRANTY, to the extent permitted by law.\n",
-    '\n',
-    "Report bugs to <https://github.com/sorairolake/rzopfli/issues>."
-);
-
-const AFTER_LONG_HELP: &str = "See `rzopfli(1)` for more details.";
-
 #[derive(Debug, Parser)]
 #[allow(clippy::struct_excessive_bools)]
-#[command(
-    version,
-    long_version(LONG_VERSION),
-    about,
-    max_term_width(100),
-    after_long_help(AFTER_LONG_HELP)
-)]
+#[command(version, about, max_term_width(100))]
 pub struct Opt {
     /// Write to standard output, keep original files.
     #[arg(short('c'), long, conflicts_with("remove"), conflicts_with("suffix"))]
@@ -66,7 +44,7 @@ pub struct Opt {
     ///
     /// Any non-empty UTF-8 string which starts with '.' and does not contains a
     /// path separator can be specified as the suffix.
-    #[arg(short('S'), long, value_name("SUFFIX"))]
+    #[arg(short('S'), long)]
     pub suffix: Option<Suffix>,
 
     /// Perform compression for the specified number of iterations.
@@ -77,13 +55,7 @@ pub struct Opt {
     pub iteration: NonZeroU64,
 
     /// Output to the specified format.
-    #[arg(
-        long,
-        value_enum,
-        default_value_t,
-        value_name("FORMAT"),
-        ignore_case(true)
-    )]
+    #[arg(long, value_enum, default_value_t, ignore_case(true))]
     pub format: Format,
 
     /// The minimum log level to print.

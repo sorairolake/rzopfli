@@ -21,3 +21,5 @@ image:{license-badge}[License]
 
 **rzopfli** is a lossless data compression tool which uses the
 {zopfli-repo-url}[Zopfli] compression algorithm.
+
+image::demo.gif[Demo animation]
