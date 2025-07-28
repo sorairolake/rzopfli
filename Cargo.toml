@@ -4,7 +4,7 @@
 
 [package]
 name = "rzopfli"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2024"
 rust-version = "1.85.0"
@@ -20,12 +20,12 @@ include = ["/LICENSES", "/README.md", "/src"]
 [dependencies]
 anyhow = "1.0.98"
 byte-unit = "5.1.6"
-clap = { version = "4.5.40", features = ["derive", "wrap_help"] }
-clap_complete = "4.5.54"
-clap_complete_nushell = "4.5.7"
+clap = { version = "4.5.41", features = ["derive", "wrap_help"] }
+clap_complete = "4.5.55"
+clap_complete_nushell = "4.5.8"
 log = "0.4.27"
 simplelog = "0.12.2"
-sysexits = "0.9.0"
+sysexits = "0.9.1"
 zopfli = "0.8.2"
 
 [dev-dependencies]
