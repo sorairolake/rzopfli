@@ -25,7 +25,7 @@ clap_complete = "4.5.57"
 clap_complete_nushell = "4.5.8"
 log = "0.4.27"
 simplelog = "0.12.2"
-sysexits = "0.9.1"
+sysexits = "0.10.0"
 zopfli = "0.8.2"
 
 [dev-dependencies]
