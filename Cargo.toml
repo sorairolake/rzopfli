@@ -5,11 +5,9 @@
 [package]
 name = "rzopfli"
 version = "0.1.6"
-authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2024"
 rust-version = "1.85.0"
 description = "A lossless data compression tool using Zopfli"
-readme = "README.md"
 homepage = "https://sorairolake.github.io/rzopfli/"
 repository = "https://github.com/sorairolake/rzopfli"
 license = "Apache-2.0 OR MIT"
