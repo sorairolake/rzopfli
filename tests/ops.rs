@@ -12,12 +12,14 @@ use std::{
 use flate2::read::GzDecoder;
 use predicates::prelude::predicate;
 
+use crate::utils::command;
+
 const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/CC-BY-4.0.txt");
 
 #[test]
 fn compress_from_stdin() {
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("-c")
             .write_stdin(TEST_DATA)
             .output()
@@ -32,7 +34,7 @@ fn compress_from_stdin() {
         assert!(output.status.success());
     }
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("-f")
             .write_stdin(TEST_DATA)
             .output()
@@ -47,7 +49,7 @@ fn compress_from_stdin() {
         assert!(output.status.success());
     }
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("-c")
             .arg("-")
             .write_stdin(TEST_DATA)
@@ -63,7 +65,7 @@ fn compress_from_stdin() {
         assert!(output.status.success());
     }
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("-f")
             .arg("-")
             .write_stdin(TEST_DATA)
@@ -86,7 +88,7 @@ fn write_to_stdout() {
     let temp_dir_path = temp_dir.path();
     let input_filename = temp_dir_path.join("foo.txt");
     fs::write(&input_filename, TEST_DATA).unwrap();
-    let output = utils::command::command()
+    let output = command::command()
         .arg("-c")
         .arg(input_filename)
         .output()
@@ -107,7 +109,7 @@ fn write_to_stdout_conflicts_with_remove() {
     let temp_dir_path = temp_dir.path();
     let input_filename = temp_dir_path.join("foo.txt");
     fs::write(&input_filename, TEST_DATA).unwrap();
-    utils::command::command()
+    command::command()
         .arg("-c")
         .arg("--rm")
         .arg(input_filename)
@@ -128,7 +130,7 @@ fn write_to_stdout_conflicts_with_suffix() {
     let mut output_filename = input_filename.clone();
     output_filename.as_mut_os_string().push(".gzip");
     assert!(!output_filename.exists());
-    utils::command::command()
+    command::command()
         .arg("-c")
         .arg("-S")
         .arg(".gzip")
@@ -152,7 +154,7 @@ fn compress_with_force() {
         output_filename.as_mut_os_string().push(".gz");
         File::create_new(&output_filename).unwrap();
         assert!(output_filename.exists());
-        let command = utils::command::command()
+        let command = command::command()
             .arg(input_filename)
             .assert()
             .failure()
@@ -176,7 +178,7 @@ fn compress_with_force() {
         output_filename.as_mut_os_string().push(".gz");
         File::create_new(&output_filename).unwrap();
         assert!(output_filename.exists());
-        utils::command::command()
+        command::command()
             .arg("-f")
             .arg(input_filename)
             .assert()
@@ -200,7 +202,7 @@ fn compress_with_keep() {
     let mut output_filename = input_filename.clone();
     output_filename.as_mut_os_string().push(".gz");
     assert!(!output_filename.exists());
-    utils::command::command()
+    command::command()
         .arg("-k")
         .arg(&input_filename)
         .assert()
@@ -224,7 +226,7 @@ fn compress_with_remove() {
     let mut output_filename = input_filename.clone();
     output_filename.as_mut_os_string().push(".gz");
     assert!(!output_filename.exists());
-    utils::command::command()
+    command::command()
         .arg("--rm")
         .arg(&input_filename)
         .assert()
@@ -252,7 +254,7 @@ fn compress_with_keep_conflicts_with_remove() {
     let mut output_filename = input_filename.clone();
     output_filename.as_mut_os_string().push(".gz");
     assert!(!output_filename.exists());
-    utils::command::command()
+    command::command()
         .arg("-k")
         .arg("--rm")
         .arg(input_filename)
@@ -273,7 +275,7 @@ fn compress_with_suffix() {
     let mut output_filename = input_filename.clone();
     output_filename.as_mut_os_string().push(".gzip");
     assert!(!output_filename.exists());
-    utils::command::command()
+    command::command()
         .arg("-S")
         .arg(".gzip")
         .arg(&input_filename)
@@ -296,7 +298,7 @@ fn compress_with_invalid_suffix() {
         let temp_dir_path = temp_dir.path();
         let input_filename = temp_dir_path.join("foo.txt");
         fs::write(&input_filename, TEST_DATA).unwrap();
-        utils::command::command()
+        command::command()
             .arg("-S")
             .arg("")
             .arg(&input_filename)
@@ -311,7 +313,7 @@ fn compress_with_invalid_suffix() {
         let input_filename = temp_dir_path.join("foo.txt");
         fs::write(&input_filename, TEST_DATA).unwrap();
         let suffix = if cfg!(windows) { r"foo\bar" } else { "foo/bar" };
-        utils::command::command()
+        command::command()
             .arg("-S")
             .arg(suffix)
             .arg(&input_filename)
@@ -327,7 +329,7 @@ fn compress_with_invalid_suffix() {
         let temp_dir_path = temp_dir.path();
         let input_filename = temp_dir_path.join("foo.txt");
         fs::write(&input_filename, TEST_DATA).unwrap();
-        utils::command::command()
+        command::command()
             .arg("-S")
             .arg("gzip")
             .arg(&input_filename)

@@ -9,6 +9,8 @@ use std::{fs, io::Read};
 use flate2::read::GzDecoder;
 use predicates::prelude::predicate;
 
+use crate::utils::command;
+
 const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/CC-BY-4.0.txt");
 
 #[test]
@@ -20,7 +22,7 @@ fn compress_with_1_iteration() {
     let mut output_filename = input_filename.clone();
     output_filename.as_mut_os_string().push(".gz");
     assert!(!output_filename.exists());
-    utils::command::command()
+    command::command()
         .arg("-i")
         .arg("1")
         .arg(input_filename)
@@ -51,7 +53,7 @@ fn compress_with_10_iterations() {
     let mut output_filename = input_filename.clone();
     output_filename.as_mut_os_string().push(".gz");
     assert!(!output_filename.exists());
-    utils::command::command()
+    command::command()
         .arg("-i")
         .arg("10")
         .arg(input_filename)
@@ -82,7 +84,7 @@ fn compress_with_50_iterations() {
     let mut output_filename = input_filename.clone();
     output_filename.as_mut_os_string().push(".gz");
     assert!(!output_filename.exists());
-    utils::command::command()
+    command::command()
         .arg("-i")
         .arg("50")
         .arg(input_filename)
@@ -111,7 +113,7 @@ fn compress_with_invalid_iterations() {
         let temp_dir_path = temp_dir.path();
         let input_filename = temp_dir_path.join("foo.txt");
         fs::write(&input_filename, TEST_DATA).unwrap();
-        utils::command::command()
+        command::command()
             .arg("-i")
             .arg("0")
             .arg(input_filename)
@@ -130,7 +132,7 @@ fn compress_with_invalid_iterations() {
         let temp_dir_path = temp_dir.path();
         let input_filename = temp_dir_path.join("foo.txt");
         fs::write(&input_filename, TEST_DATA).unwrap();
-        utils::command::command()
+        command::command()
             .arg("-i")
             .arg("a")
             .arg(input_filename)

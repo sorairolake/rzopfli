@@ -11,7 +11,7 @@ use std::{
 };
 
 use anyhow::bail;
-use clap::{CommandFactory, Parser, ValueEnum, ValueHint};
+use clap::{Command, CommandFactory, Parser, ValueEnum, ValueHint};
 use clap_complete::Generator;
 use simplelog::LevelFilter;
 
@@ -130,7 +130,7 @@ impl Generator for Shell {
         }
     }
 
-    fn generate(&self, cmd: &clap::Command, buf: &mut dyn Write) {
+    fn generate(&self, cmd: &Command, buf: &mut dyn Write) {
         match self {
             Self::Bash => clap_complete::Shell::Bash.generate(cmd, buf),
             Self::Elvish => clap_complete::Shell::Elvish.generate(cmd, buf),
