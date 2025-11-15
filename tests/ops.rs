@@ -14,7 +14,7 @@ use predicates::prelude::predicate;
 
 use crate::utils::command;
 
-const TEST_DATA: &[u8] = include_bytes!("data/LICENSES/CC-BY-4.0.txt");
+static TEST_DATA: &[u8] = include_bytes!("data/LICENSES/CC-BY-4.0.txt");
 
 #[test]
 fn compress_from_stdin() {
