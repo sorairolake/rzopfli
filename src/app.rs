@@ -58,49 +58,47 @@ pub fn run() -> anyhow::Result<()> {
         .input
         .map_or_else(|| vec![None], |f| f.into_iter().map(Some).collect())
     {
-        let input = match file {
-            Some(ref path) if path.as_os_str() != "-" => {
-                let f = File::open(path)
-                    .with_context(|| format!("could not open {}", path.display()))?;
-                let size = f.metadata().ok().map(|m| m.len());
-                if size.is_none() {
-                    warn!("could not query metadata about input file");
-                }
-                (Input::File(f), Some(path), size)
+        let input = if let Some(ref path) = file
+            && path.as_os_str() != "-"
+        {
+            let f =
+                File::open(path).with_context(|| format!("could not open {}", path.display()))?;
+            let size = f.metadata().ok().map(|m| m.len());
+            if size.is_none() {
+                warn!("could not query metadata about input file");
             }
-            _ => {
-                let stdin = io::stdin();
-                if stdin.is_terminal() && !opt.force {
-                    bail!("standard input is a terminal");
-                }
-                (Input::Stdin(stdin), None, None)
+            (Input::File(f), Some(path), size)
+        } else {
+            let stdin = io::stdin();
+            if stdin.is_terminal() && !opt.force {
+                bail!("standard input is a terminal");
             }
+            (Input::Stdin(stdin), None, None)
         };
 
-        let mut output = match input.1 {
-            Some(path) if !opt.stdout => {
-                let mut output_path = path.clone();
-                output_path.as_mut_os_string().push(extension);
-                let f = if opt.force {
-                    File::create(&output_path)
-                } else {
-                    File::create_new(&output_path)
-                }
-                .with_context(|| format!("could not open {}", output_path.display()))?;
-                (Output::File(f), Some(output_path), None)
+        let mut output = if let Some(path) = input.1
+            && !opt.stdout
+        {
+            let mut output_path = path.clone();
+            output_path.as_mut_os_string().push(extension);
+            let f = if opt.force {
+                File::create(&output_path)
+            } else {
+                File::create_new(&output_path)
             }
-            _ => {
-                let stdout = io::stdout();
-                if stdout.is_terminal() && !(opt.stdout || opt.force) {
-                    bail!("compressed data not written to a terminal");
-                }
-                (Output::Stdout(stdout), None, None)
+            .with_context(|| format!("could not open {}", output_path.display()))?;
+            (Output::File(f), Some(output_path), None)
+        } else {
+            let stdout = io::stdout();
+            if stdout.is_terminal() && !(opt.stdout || opt.force) {
+                bail!("compressed data not written to a terminal");
             }
+            (Output::Stdout(stdout), None, None)
         };
-        if let Some(ref path) = output.1 {
-            if !opt.stdout {
-                info!("Saving to: {}", path.display());
-            }
+        if let Some(ref path) = output.1
+            && !opt.stdout
+        {
+            info!("Saving to: {}", path.display());
         }
 
         zopfli::compress(zopfli_opt, format, BufReader::new(input.0), &mut output.0)
@@ -124,13 +122,13 @@ pub fn run() -> anyhow::Result<()> {
             );
         }
 
-        if opt.remove {
-            if let Some(path) = input.1 {
-                if fs::remove_file(path).is_ok() {
-                    info!("{} has been removed", path.display());
-                } else {
-                    warn!("could not remove {}", path.display());
-                }
+        if opt.remove
+            && let Some(path) = input.1
+        {
+            if fs::remove_file(path).is_ok() {
+                info!("{} has been removed", path.display());
+            } else {
+                warn!("could not remove {}", path.display());
             }
         }
     }

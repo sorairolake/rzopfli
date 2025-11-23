@@ -6,7 +6,7 @@
 name = "rzopfli"
 version = "0.1.6"
 edition = "2024"
-rust-version = "1.85.0"
+rust-version = "1.88.0"
 description = "A lossless data compression tool using Zopfli"
 homepage = "https://sorairolake.github.io/rzopfli/"
 repository = "https://github.com/sorairolake/rzopfli"
