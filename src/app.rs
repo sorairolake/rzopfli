@@ -55,7 +55,7 @@ pub fn run() -> anyhow::Result<()> {
     }
 
     for file in opt
-        .input
+        .file
         .map_or_else(|| vec![None], |f| f.into_iter().map(Some).collect())
     {
         let input = if let Some(ref path) = file
