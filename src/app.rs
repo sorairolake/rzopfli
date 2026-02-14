@@ -17,7 +17,7 @@ use zopfli::{Format, Options};
 use crate::{cli::Opt, input::Input, output::Output};
 
 /// Runs the program and returns the result.
-#[allow(clippy::cognitive_complexity, clippy::too_many_lines)]
+#[expect(clippy::too_many_lines)]
 pub fn run() -> anyhow::Result<()> {
     let opt = Opt::parse();
 
@@ -40,7 +40,6 @@ pub fn run() -> anyhow::Result<()> {
         ..Default::default()
     };
     let format = opt.format.into();
-    #[allow(clippy::option_if_let_else)]
     let extension = if let Some(ref suffix) = opt.suffix {
         suffix
     } else {
@@ -112,7 +111,7 @@ pub fn run() -> anyhow::Result<()> {
             output.2 = size;
         }
         if let (Some(is), Some(os)) = (input.2, output.2) {
-            #[allow(clippy::cast_precision_loss)]
+            #[expect(clippy::cast_precision_loss)]
             let space_saving = (1.0 - (os as f64 / is as f64)) * 100.0;
             info!(
                 "Original Size: {:#.2}, Compressed: {:#.2}, Compression: {:.2}% Removed",

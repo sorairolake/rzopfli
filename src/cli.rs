@@ -16,7 +16,7 @@ use clap_complete::Generator;
 use simplelog::LevelFilter;
 
 #[derive(Debug, Parser)]
-#[allow(clippy::struct_excessive_bools)]
+#[expect(clippy::struct_excessive_bools)]
 #[command(version, about, max_term_width(100))]
 pub struct Opt {
     /// Write to standard output, keep original files.
@@ -110,7 +110,7 @@ pub enum Shell {
     /// Nushell.
     Nushell,
 
-    #[allow(clippy::enum_variant_names)]
+    #[expect(clippy::enum_variant_names)]
     /// PowerShell.
     PowerShell,
 
