@@ -20,7 +20,7 @@ anyhow = "1.0.102"
 byte-unit = "5.2.0"
 clap = { version = "4.5.60", features = ["derive", "wrap_help"] }
 clap_complete = "4.5.66"
-clap_complete_nushell = "4.5.10"
+clap_complete_nushell = "4.6.0"
 log = "0.4.29"
 simplelog = "0.12.2"
 sysexits = "0.13.0"
