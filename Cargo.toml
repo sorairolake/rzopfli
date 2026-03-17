@@ -30,7 +30,7 @@ zopfli = "0.8.3"
 assert_cmd = "2.1.2"
 flate2 = "1.1.9"
 predicates = "3.1.4"
-tempfile = "3.26.0"
+tempfile = "3.27.0"
 
 [lints.clippy]
 cargo = { level = "warn", priority = -1 }
